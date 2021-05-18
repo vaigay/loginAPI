@@ -1,6 +1,7 @@
 package com.vaigay.controller;
 
 import java.security.Principal;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +17,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vaigay.DTO.ChangePassword;
 import com.vaigay.DTO.LoginUser;
 import com.vaigay.DTO.RegisterUser;
 import com.vaigay.DTO.UserDTO;
+import com.vaigay.service.UserChecking;
 import com.vaigay.service.UserService;
-
+@CrossOrigin
 @RestController
 public class UserRestController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserChecking userChecking;
 	
 	@GetMapping("/home")//không cần login
 	public String getHome() {
@@ -37,32 +44,40 @@ public class UserRestController {
 		return new ResponseEntity<String>(userService.authenticate(user),HttpStatus.OK);
 	}
 	
-	@PutMapping("/user/{id}")//user gửi request phải cùng id với user.id(user request body của json)
-	public ResponseEntity<?> updateUserPassword(@PathVariable(name = "id") long id, @RequestBody RegisterUser user) {
-		if(!userService.isRightUser(id)) {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+	@PutMapping("/user")
+	public ResponseEntity<?> updateUserPassword(@RequestBody ChangePassword user) {
+		String username = userChecking.getUserName();
+		System.out.println(user);
+		if(!userService.checkUserPassWord(user,username)) {
+			return new ResponseEntity<String>("OldPassword is incorrect",HttpStatus.FORBIDDEN);
 		}
-		if(!userService.checkUserExists(user.getUsername(),id))
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		if(userService.updateUserPassword(user, id) != 0)
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		return new ResponseEntity<>(HttpStatus.CONFLICT);
+		if(userService.updateUserPassword(user,username) != 0)
+			return new ResponseEntity<String>("Update password successfully",HttpStatus.OK);
+		return new ResponseEntity<String>("Can not update your password",HttpStatus.CONFLICT);
 	}
 	
 	@GetMapping("/user/{id}")
 	public ResponseEntity<UserDTO> adminPage(@PathVariable(name = "id") long id) {
 		UserDTO userDTO =userService.getOneUser(id);
+		if(!userChecking.isAdmin()) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		if(userDTO == null)
 			return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<UserDTO>(userDTO,HttpStatus.OK);
 	}
 	
+	@GetMapping("/userInfo")//lấy thông tin của chính user
+	public ResponseEntity<UserDTO> getUserInfo(){
+		long id = userChecking.getIdUser();
+		UserDTO userDTO =userService.getOneUser(id);
+		return new ResponseEntity<UserDTO>(userDTO,HttpStatus.OK);
+	}
 	
-	@GetMapping("/user")
+	
+	@GetMapping("/users")
 	public ResponseEntity<List<UserDTO>> getAllUser(){
 		List<UserDTO> userDTOs = userService.getAllUser();
-		if(userDTOs.size() == 0)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<List<UserDTO>>(userDTOs,HttpStatus.OK);
 		
 	}

@@ -28,4 +28,15 @@ public class InsertUser {
 //		System.out.println(endcodep);
 //		UserRepository.save(u);
 //	}
+	
+	@Test
+	public void test() {
+		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+		String password = "admin";
+		String endcodep = "$2a$10$AdODcZFJtBs76t0peLMgO.LqjebFb7Vurwm5MepC5uzda2r2sC4si";
+		for(int i = 0 ; i <5 ;i++) {
+			System.out.println(b.encode(password));
+			System.out.println(b.matches(password, endcodep));
+		}
+	}
 }

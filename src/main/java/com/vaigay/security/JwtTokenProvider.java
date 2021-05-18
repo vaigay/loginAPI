@@ -17,7 +17,7 @@ public class JwtTokenProvider {
 	
 	private final String JWT_KEY = "vaigay123";
 	
-	private final long JWT_EXPRIRATION = 20000000L;
+	private final long JWT_EXPRIRATION = 1000*60*60;
 	
 	public String generateToken(UserDetailImp UserDetail) {
 		Date now = new Date(System.currentTimeMillis());

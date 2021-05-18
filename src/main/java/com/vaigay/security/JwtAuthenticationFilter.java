@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsServiceImp UserDetailsService;
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain)
@@ -32,10 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                
-            	System.out.println("Validate!!!");
-            	
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {          	
                 Long userId = tokenProvider.getUserIdFromJWT(jwt);
                 
                 UserDetails userDetails = UserDetailsService.loadUserById(userId);
@@ -46,12 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    System.out.println("the last valid");
                 }
             }
-//            else {
-//            	SecurityContextHolder.getContext().setAuthentication(null);
-//            }
         } catch (Exception ex) {
             System.out.println("failed on set user authentication" + ex);
         }

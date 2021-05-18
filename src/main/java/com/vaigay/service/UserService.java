@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.vaigay.DTO.ChangePassword;
 import com.vaigay.DTO.LoginUser;
 import com.vaigay.DTO.RegisterUser;
 import com.vaigay.DTO.UserDTO;
@@ -45,8 +46,7 @@ public class UserService {
     	Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
     	
     	SecurityContextHolder.getContext().setAuthentication(authentication);
-    	
-    	return tokenProvider.generateToken((UserDetailImp)authentication.getPrincipal());
+    	return tokenProvider.generateToken((UserDetailImp)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 	
 	public boolean checkUsernameExists(String username) {
@@ -57,7 +57,7 @@ public class UserService {
 		User user = new User();
 		user.setName(userRegister.getName());
 		String password = userRegister.getPassword();
-		user.setUsername(userRegister.getPassword());
+		user.setUsername(userRegister.getUsername());
 		user.setPassword(passwordEncoder.encode(password));
 		Set<Role> roles = new HashSet<Role>();
 		Role r = new Role();
@@ -66,26 +66,23 @@ public class UserService {
 		user.setNonBlock(true);
 		user.setRoles(roles);
 		userRepository.save(user);
+		System.out.println(user);
 	}
 	
 	public boolean checkUserExists(String username, long id) {
 		return userRepository.existsByUsernameAndId(username, id);
 	}
 	
-	public int updateUserPassword(RegisterUser user,long id) {
-		String encode = passwordEncoder.encode(user.getPassword());
-		return userRepository.updateUserPassword(encode, id);
+	public int updateUserPassword(ChangePassword user,String username) {
+		String encode = passwordEncoder.encode(user.getNewPassword());
+		return userRepository.updateUserPassword(encode,username);
 	}
 	
-	public boolean isRightUser(long idUser) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetailImp p = (UserDetailImp) authentication.getPrincipal();
-		System.out.println(p.getUserId() + ", " +idUser);
-		return p.getUserId() == idUser;
-	}
-	
+		
 	public UserDTO getOneUser(long id) {
-		User u = userRepository.getOne(id);
+		User u = userRepository.findById(id).orElse(null);
+		if(u == null)
+			return null;
 		return userConverter.convertToUserDTO(u);
 	}
 	
@@ -97,4 +94,11 @@ public class UserService {
 		}
 		return usersDTO;
 	}
+	
+	
+	public boolean checkUserPassWord(ChangePassword user,String username) {
+		String userPassword = userRepository.getUserPassword(username);
+		return passwordEncoder.matches(user.getOldPassword(), userPassword);
+	}
+
 }

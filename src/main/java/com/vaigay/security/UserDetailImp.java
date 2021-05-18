@@ -75,4 +75,9 @@ public class UserDetailImp implements UserDetails {
 		return user.getName();
 	}
 
+	@Override
+	public String toString() {
+		return "UserDetailImp [user=" + user + "]";
+	}
+
 }

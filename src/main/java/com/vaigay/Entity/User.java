@@ -1,5 +1,6 @@
 package com.vaigay.Entity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Generated;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -42,6 +44,9 @@ public class User {
 	@ManyToMany
 	@JoinTable(name = "user_role",joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns =  @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
+	
+	@OneToMany(mappedBy = "user")
+	private List<Cart> cart;
 
 	public long getId() {
 		return id;

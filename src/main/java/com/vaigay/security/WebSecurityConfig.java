@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -36,6 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
   
         return new BCryptPasswordEncoder();
     }
+    
+    
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
@@ -52,8 +56,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
              	.cors() 
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/login","/home","/register").permitAll()
-                    .antMatchers("/admin").hasRole("ADMIN")
+                    .antMatchers("/login","/home","/register","/img/**").permitAll()
+                    .antMatchers("/admin","/users").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.POST,"/product/**").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.PUT,"/product/**").hasRole("ADMIN")
+                    //.antMatchers("productInCart/**","productInCart/**")
                     .anyRequest().authenticated()
                     .and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
