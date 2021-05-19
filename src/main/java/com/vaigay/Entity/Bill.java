@@ -20,15 +20,13 @@ public class Bill {
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 	
-	private double shipping;
+
 	
 	private String address;
 	
-	private double discount;
 	
 	private double totalProductAmount;
 	
-	private double totalAmount;
 
 	public long getId() {
 		return id;
@@ -46,13 +44,7 @@ public class Bill {
 		this.cart = cart;
 	}
 
-	public double getShipping() {
-		return shipping;
-	}
 
-	public void setShipping(double shipping) {
-		this.shipping = shipping;
-	}
 
 	public String getAddress() {
 		return address;
@@ -62,13 +54,7 @@ public class Bill {
 		this.address = address;
 	}
 
-	public double getDiscount() {
-		return discount;
-	}
 
-	public void setDiscount(double discount) {
-		this.discount = discount;
-	}
 
 	public double getTotalProductAmount() {
 		return totalProductAmount;
@@ -78,11 +64,5 @@ public class Bill {
 		this.totalProductAmount = totalProductAmount;
 	}
 
-	public double getTotalAmount() {
-		return totalAmount;
-	}
 
-	public void setTotalAmount(double totalAmount) {
-		this.totalAmount = totalAmount;
-	}
 }

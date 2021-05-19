@@ -11,9 +11,11 @@ public class ProductInCartDTO {
 		this.productDTO = productDTO;
 		this.quantity = quantity;
 	}
+	
 	private long id;
 	private ProductDTO productDTO;
 	private int quantity;
+	
 	public long getId() {
 		return id;
 	}

@@ -59,6 +59,7 @@ public class UserService {
 		String password = userRegister.getPassword();
 		user.setUsername(userRegister.getUsername());
 		user.setPassword(passwordEncoder.encode(password));
+		user.setPhoneNumber(userRegister.getPhoneNumber());
 		Set<Role> roles = new HashSet<Role>();
 		Role r = new Role();
 		r.setId(2);

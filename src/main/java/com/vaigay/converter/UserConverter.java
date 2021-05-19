@@ -22,7 +22,8 @@ public class UserConverter {
 		User u = new User();
 		u.setUsername(userDTO.getUsername());
 		u.setId(userDTO.getId());
-		u.setNonBlock(u.isNonBlock());
+		u.setNonBlock(userDTO.isNonBlock());
+		u.setPhoneNumber(userDTO.getPhoneNumber());
 		if(userDTO.getRole() != null) {
 			Set<Role> roles = new HashSet<Role>();
 			for(RoleDTO roleDTO : userDTO.getRole()) {
@@ -39,6 +40,7 @@ public class UserConverter {
 		u.setUsername(user.getUsername());
 		u.setId(user.getId());
 		u.setNonBlock(user.isNonBlock());
+		u.setPhoneNumber(user.getPhoneNumber());
 		if(user.getRoles() != null) {
 			Set<RoleDTO> roles = new HashSet<RoleDTO>();
 			for(Role role : user.getRoles()) {

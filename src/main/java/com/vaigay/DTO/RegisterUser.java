@@ -1,12 +1,7 @@
 package com.vaigay.DTO;
 
 public class RegisterUser {
-	public RegisterUser(String name, String username, String password) {
-		super();
-		this.name = name;
-		this.username = username;
-		this.password = password;
-	}
+	
 	public RegisterUser() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -14,6 +9,7 @@ public class RegisterUser {
 	private String name;
 	private String username;
 	private String password;
+	private String phoneNumber;
 	public String getName() {
 		return name;
 	}
@@ -32,4 +28,16 @@ public class RegisterUser {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	@Override
+	public String toString() {
+		return "RegisterUser [name=" + name + ", username=" + username + ", password=" + password + ", phoneNumber="
+				+ phoneNumber + "]";
+	}
+	
 }

@@ -84,9 +84,12 @@ public class UserRestController {
 	
 	@PostMapping("/register")//không cần login
 	public ResponseEntity<?> register(@RequestBody RegisterUser user){
-		if(userService.checkUsernameExists(user.getUsername()) || user.getName() == null || user.getName().equals("") || user.getPassword() == null || user.getPassword().equals("") || user.getUsername() == null || user.getUsername().equals("")) {
+		System.out.println(user);
+		if(user.getPhoneNumber() == null || user.getPhoneNumber().equals("") || user.getName() == null || user.getName().equals("") || user.getPassword() == null || user.getPassword().equals("") || user.getUsername() == null || user.getUsername().equals("")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		if(userService.checkUsernameExists(user.getUsername()))
+			return new ResponseEntity<String>("Username has been taken",HttpStatus.BAD_REQUEST);
 		userService.saveUserResigter(user);
 		return new ResponseEntity<>(HttpStatus.OK);
 		

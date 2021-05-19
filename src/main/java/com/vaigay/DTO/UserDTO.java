@@ -20,6 +20,7 @@ public class UserDTO {
 	private String username;
 	private boolean nonBlock;
 	private Set<RoleDTO> role;
+	private String phoneNumber;
 	
 	public String getName() {
 		return name;
@@ -50,6 +51,12 @@ public class UserDTO {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 	
 	

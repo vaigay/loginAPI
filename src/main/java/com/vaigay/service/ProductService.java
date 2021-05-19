@@ -64,10 +64,12 @@ public class ProductService {
 		return productRepository.findById(id).orElse(null);
 	}
 
-	public void updateProduct(Product product, ProductDTO productDTO,long id) {
+	public void updateProduct(Product product, ProductDTO productDTO,long id,MultipartFile upload) throws IOException {
 		product = pConverter.toEntity(productDTO);
 		product.setId(id);
-		
+		product.setImageURL(saveImage(upload));
+		productDTO.setImageURL(product.getImageURL());
+		productRepository.save(product);
 	}
 	
 	public ProductDTO getProductDTOById(long id) {
@@ -75,6 +77,10 @@ public class ProductService {
 		if(product == null)
 			return null;
 		return pConverter.toDTO(product);
+	}
+	
+	public boolean checkProductExists(long id) {
+		return productRepository.existsById(id);
 	}
 	
 	
@@ -105,10 +111,7 @@ public class ProductService {
 	private String saveImage(MultipartFile upload) throws IOException {
 		if(upload != null) {
 			String sourceName = upload.getOriginalFilename();
-			String fileName = RandomStringUtils.randomAlphabetic(5).concat(".").concat(sourceName);
-			StringBuilder des = new StringBuilder(folderImage);
-			des.append(fileName);
-			String desFileName = des.toString();
+			String desFileName = RandomStringUtils.randomAlphabetic(5).concat(".").concat(sourceName);
 			Path path = Paths.get(uploadPath);
 			try {
 				InputStream inputStream = upload.getInputStream();
@@ -120,5 +123,7 @@ public class ProductService {
 		}
 		return null;
 	}
+	
+	
 	
 }

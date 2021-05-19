@@ -54,20 +54,22 @@ public class ProductRestController {
 
 	@PostMapping("/product")
 	public ResponseEntity<ProductDTO> saveProduct( ProductDTO productDTO,@RequestParam(value = "image" , required = false) MultipartFile upload) {
+		System.out.println(productDTO);
 		try {
 			return new ResponseEntity<ProductDTO>(productService.saveProduct(productDTO,upload), HttpStatus.CREATED);
 		} catch (IOException e) {
+			e.printStackTrace();
 			return new ResponseEntity<ProductDTO>( HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PutMapping("/product/{id}")
-	public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO, @RequestParam(value = "image" , required = false) MultipartFile upload,
-			@PathVariable(name = "id") long id) {
+	public ResponseEntity<ProductDTO> updateProduct(ProductDTO productDTO, @RequestParam(value = "image" , required = false) MultipartFile upload,
+			@PathVariable(name = "id") long id) throws IOException {
 		Product product = productService.getProductById(id);
 		if (product == null)
 			return new ResponseEntity<ProductDTO>(HttpStatus.NOT_FOUND);
-		productService.updateProduct(product, productDTO, id);
+		productService.updateProduct(product, productDTO, id,upload);
 		productDTO.setId(id);
 		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
 	}

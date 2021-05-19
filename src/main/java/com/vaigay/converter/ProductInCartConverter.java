@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vaigay.DTO.ProductInCartDTO;
+import com.vaigay.Entity.Cart;
 import com.vaigay.Entity.Product;
 import com.vaigay.Entity.ProductInCart;
 
@@ -29,13 +30,29 @@ public class ProductInCartConverter {
 	public List<ProductInCartDTO> toListDTONotSold(List<Object[]> productInCarts){
 		List<ProductInCartDTO> dtos = new ArrayList<ProductInCartDTO>();
 		for(Object[] tmp : productInCarts){
-			int id = Integer.getInteger(tmp[0].toString());
+			System.out.println(tmp[0].toString());
+			long id = Long.parseLong(tmp[0].toString());
 			Product product = (Product) tmp[1];
-			int quantity = Integer.getInteger(tmp[2].toString());
+			int quantity = Integer.parseInt(tmp[2].toString());
 			dtos.add(toDTO(id, product, quantity));
 		}
 		return dtos;
 	}
 	
+	
+	public ProductInCart toEntity(long idProduct, int quantity, long idCart,Long  id) {
+		ProductInCart pCart = new ProductInCart();
+//		pCart.setId(dto.getId());
+		if(id != 0)
+			pCart.setId(id);
+		Product p = new Product();
+		p.setId(idProduct);
+		pCart.setProduct(p);
+		pCart.setQuantity(quantity);
+		Cart c = new Cart();
+		c.setId(idCart);
+		pCart.setCart(c);
+		return pCart;
+	}
 	
 }

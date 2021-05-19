@@ -8,5 +8,5 @@ import com.vaigay.Entity.Cart;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 	
-	 Optional<Cart> findByStatusAndUser_id(String status,long id);
+	 Optional<Cart> findByStatusAndUser_id(boolean status,long id);
 }

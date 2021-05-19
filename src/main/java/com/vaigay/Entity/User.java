@@ -40,6 +40,7 @@ public class User {
 	private String username;
 	private String password;
 	private boolean nonBlock;
+	private String phoneNumber;
 	
 	@ManyToMany
 	@JoinTable(name = "user_role",joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns =  @JoinColumn(name = "role_id"))
@@ -101,6 +102,22 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + ", nonBlock="
 				+ nonBlock + "]";
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public List<Cart> getCart() {
+		return cart;
+	}
+
+	public void setCart(List<Cart> cart) {
+		this.cart = cart;
 	}
 
 	
