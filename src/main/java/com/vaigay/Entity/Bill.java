@@ -1,5 +1,7 @@
 package com.vaigay.Entity;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +25,7 @@ public class Bill {
 
 	
 	private String address;
-	
+	private Date crateDate;
 	
 	private double totalProductAmount;
 	
@@ -62,6 +64,14 @@ public class Bill {
 
 	public void setTotalProductAmount(double totalProductAmount) {
 		this.totalProductAmount = totalProductAmount;
+	}
+
+	public Date getCrateDate() {
+		return crateDate;
+	}
+
+	public void setCrateDate(Date crateDate) {
+		this.crateDate = crateDate;
 	}
 
 

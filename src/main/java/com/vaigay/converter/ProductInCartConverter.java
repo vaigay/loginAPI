@@ -40,6 +40,8 @@ public class ProductInCartConverter {
 	}
 	
 	
+	
+	
 	public ProductInCart toEntity(long idProduct, int quantity, long idCart,Long  id) {
 		ProductInCart pCart = new ProductInCart();
 //		pCart.setId(dto.getId());

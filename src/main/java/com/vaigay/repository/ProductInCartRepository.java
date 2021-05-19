@@ -31,4 +31,6 @@ public interface ProductInCartRepository extends JpaRepository<ProductInCart, Lo
 	boolean existsByProduct_Id(long id);
 	
 	void deleteByProduct_Id(long id);
+	
+	int countByCart_Id(long id);
 }
