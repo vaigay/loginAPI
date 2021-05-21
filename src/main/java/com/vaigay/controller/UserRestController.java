@@ -57,7 +57,7 @@ public class UserRestController {
 	}
 	
 	@GetMapping("/user/{id}")
-	public ResponseEntity<UserDTO> adminPage(@PathVariable(name = "id") long id) {
+	public ResponseEntity<UserDTO> adminGetOneUser(@PathVariable(name = "id") long id) {
 		UserDTO userDTO =userService.getOneUser(id);
 		if(!userChecking.isAdmin()) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);

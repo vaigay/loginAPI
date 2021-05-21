@@ -39,8 +39,6 @@ public class ProductService {
 	@Value("${file.upload.path}")
 	private String uploadPath;
 	
-	@Value("${folder.image}")
-	private String folderImage;
 	
 	
 	public List<ProductDTO> getAllProduct(){
@@ -124,6 +122,8 @@ public class ProductService {
 		return null;
 	}
 	
-	
+	public List<ProductDTO> getProductByName(String name){
+		return pConverter.toListDTO(productRepository.findByNameContaining(name));
+	}		
 	
 }

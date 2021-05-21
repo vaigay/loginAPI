@@ -89,7 +89,7 @@ public class BillService {
 		productInCartRepository.save(p);
 	}
 	
-	public BillDTO getOneBill(long id,long idUser) {
+	public BillDTO getOneBillOfUser(long id,long idUser) {
 		Bill bill = billRepository.findByIdAndCart_User_Id(id, idUser).orElse(null);
 		if(bill == null)
 			return null;
@@ -114,7 +114,7 @@ public class BillService {
 	}
 	
 
-	public List<BillDTO> getAllBill(long idUser) {
+	public List<BillDTO> getAllBillOfUser(long idUser) {
 		List<Bill> listBills = billRepository.findAllByCart_User_Id(idUser);
 		System.out.println(listBills.size());
 		List<BillDTO> listDTOs = new ArrayList<BillDTO>();
@@ -122,6 +122,24 @@ public class BillService {
 			listDTOs.add(toBillDTO(bill));
 		return listDTOs;
 	}
+	
+	public List<BillDTO> getAllBillByAdmin(){
+		List<Bill> listBills = billRepository.findAll();
+		System.out.println(listBills.size());
+		List<BillDTO> listDTOs = new ArrayList<BillDTO>();
+		for(Bill bill : listBills )
+			listDTOs.add(toBillDTO(bill));
+		return listDTOs;
+	}
+	
+	public BillDTO getOneBillById(long id) {
+		Bill bill = billRepository.findById(id).orElse(null);
+		if(bill == null)
+			return null;
+		return toBillDTO(bill);
+	}
+	
+
 	
 	
 }

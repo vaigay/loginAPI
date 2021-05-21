@@ -29,7 +29,7 @@ public class BillRestController {
 	@Autowired
 	private ProductInCartService pInCartSer;
 	
-	@PostMapping("/bill")
+	@PostMapping("/bill")// chỉ chuyền address
 	public ResponseEntity<?> createBill(@RequestBody BillDTO bDto){
 		Cart cart = pInCartSer.getUserCart(userChecking.getIdUser());
 		System.out.println(bDto.getAddress());
@@ -41,8 +41,8 @@ public class BillRestController {
 	}
 	
 	@GetMapping("/bill/{id}")
-	public ResponseEntity<BillDTO> getOneBill(@PathVariable(value = "id") long id){;
-		BillDTO bill = billService.getOneBill(id,userChecking.getIdUser());
+	public ResponseEntity<BillDTO> getOneBillOfUser(@PathVariable(value = "id") long id){;
+		BillDTO bill = billService.getOneBillOfUser(id,userChecking.getIdUser());
 		if(bill == null)
 			return new ResponseEntity<BillDTO>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<BillDTO>(bill,HttpStatus.OK);
@@ -50,7 +50,20 @@ public class BillRestController {
 	
 	@GetMapping("/bills")
 	public ResponseEntity<List<BillDTO>> getAllBill(){
-		return new ResponseEntity<List<BillDTO>>(billService.getAllBill(userChecking.getIdUser()),HttpStatus.OK);
+		return new ResponseEntity<List<BillDTO>>(billService.getAllBillOfUser(userChecking.getIdUser()),HttpStatus.OK);
+	}
+	
+	@GetMapping("/admin/bills")
+	public ResponseEntity<List<BillDTO>> getAllBillByAdmin(){
+		return new ResponseEntity<List<BillDTO>>(billService.getAllBillByAdmin(),HttpStatus.OK);
+	}
+	
+	@GetMapping("admin/bill/{id}")
+	public ResponseEntity<BillDTO> getOneBillByAdmin(@PathVariable(value = "id") long id){;
+		BillDTO bill = billService.getOneBillById(id);
+		if(bill == null)
+			return new ResponseEntity<BillDTO>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<BillDTO>(bill,HttpStatus.OK);
 	}
 	
 }

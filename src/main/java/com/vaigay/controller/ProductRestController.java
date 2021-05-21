@@ -44,7 +44,7 @@ public class ProductRestController {
 	}
 
 	@GetMapping("/product/{id}")
-	public ResponseEntity<ProductDTO> getAllProduct(@PathVariable(name = "id") long id) {
+	public ResponseEntity<ProductDTO> getOneProduct(@PathVariable(name = "id") long id) {
 		ProductDTO p = productService.getProductDTOById(id);
 		System.out.println(":123123");
 		if (p == null)
@@ -78,6 +78,14 @@ public class ProductRestController {
 	public ResponseEntity<Map<String, Object>> getPage(@RequestParam(name = "page", required = false) Integer page,
 			@RequestParam(value = "limit", required = false) Integer limit) {
 		return new ResponseEntity<Map<String, Object>>(productService.getPageProduct(page, limit), HttpStatus.OK);
+	}
+	
+	@GetMapping("/productFindByName/{name}")
+	public ResponseEntity<?> findProductByName(@PathVariable(name = "name") String name){
+		List<ProductDTO> dtos = productService.getProductByName(name);
+		if(dtos == null || dtos.size() == 0)
+			return new ResponseEntity<String>("None product found",HttpStatus.NOT_FOUND);
+		return new ResponseEntity<List<ProductDTO>>(dtos,HttpStatus.OK);
 	}
 
 }
