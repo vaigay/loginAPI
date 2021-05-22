@@ -56,12 +56,9 @@ public class UserRestController {
 		return new ResponseEntity<String>("Can not update your password",HttpStatus.CONFLICT);
 	}
 	
-	@GetMapping("/user/{id}")
+	@GetMapping("admin/user/{id}")
 	public ResponseEntity<UserDTO> adminGetOneUser(@PathVariable(name = "id") long id) {
 		UserDTO userDTO =userService.getOneUser(id);
-		if(!userChecking.isAdmin()) {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}
 		if(userDTO == null)
 			return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<UserDTO>(userDTO,HttpStatus.OK);
@@ -93,6 +90,12 @@ public class UserRestController {
 		userService.saveUserResigter(user);
 		return new ResponseEntity<>(HttpStatus.OK);
 		
+	}
+	
+	@GetMapping("admin/userBill/{id}")
+	public ResponseEntity<UserDTO> adminGetOneUserOfBill(@PathVariable(name = "id") long id) {
+		UserDTO userDTO =userService.getUserByIdBill(id);
+		return new ResponseEntity<UserDTO>(userDTO,HttpStatus.OK);
 	}
 	
 }

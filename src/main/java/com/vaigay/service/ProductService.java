@@ -65,7 +65,8 @@ public class ProductService {
 	public void updateProduct(Product product, ProductDTO productDTO,long id,MultipartFile upload) throws IOException {
 		product = pConverter.toEntity(productDTO);
 		product.setId(id);
-		product.setImageURL(saveImage(upload));
+		if(upload != null)
+			product.setImageURL(saveImage(upload));
 		productDTO.setImageURL(product.getImageURL());
 		productRepository.save(product);
 	}

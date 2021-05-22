@@ -2,7 +2,9 @@ package com.vaigay.Entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,8 +39,11 @@ public class Cart {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "cart")
+	@OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
 	private List<ProductInCart> productInCarts;
+	
+	@OneToOne(mappedBy = "cart",fetch = FetchType.LAZY)
+	private Bill bill;
 	
 	
 	
@@ -75,6 +80,14 @@ public class Cart {
 
 	public void setProductInCarts(List<ProductInCart> productInCarts) {
 		this.productInCarts = productInCarts;
+	}
+
+	public Bill getBill() {
+		return bill;
+	}
+
+	public void setBill(Bill bill) {
+		this.bill = bill;
 	}
 	
 }

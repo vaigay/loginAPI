@@ -48,17 +48,16 @@ public class ProductInCartService {
 	}
 	
 	public void addProductToCart(RequestProductInCart productAddToCart,long idUser) {
-		ProductInCart tmp =  productInCartRepository.findOneByProduct_id(productAddToCart.getIdProduct()).orElse(null);
+		long idCart = getUserCart(idUser).getId();
+		ProductInCart tmp =  productInCartRepository.findOneByCart_IdAndProduct_Id(idCart, productAddToCart.getIdProduct()).orElse(null);
 		int quantity = 0;
 		long id = 0;
 		if(tmp != null) {
-
 			id = tmp.getId();
 			quantity = tmp.getQuantity();
 		}
 		int tmpQuantity = productAddToCart.getQuantity();
 		productAddToCart.setQuantity(quantity + tmpQuantity);
-		long idCart = getUserCart(idUser).getId();
 		productInCartRepository.save(pInCartConverter.toEntity(productAddToCart.getIdProduct(),productAddToCart.getQuantity(), idCart, id));
 	}
 	

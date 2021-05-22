@@ -101,5 +101,9 @@ public class UserService {
 		String userPassword = userRepository.getUserPassword(username);
 		return passwordEncoder.matches(user.getOldPassword(), userPassword);
 	}
+	
+	public UserDTO getUserByIdBill(long id) {
+		return userConverter.convertToUserDTO(userRepository.findByCart_Bill_Id(id));
+	}
 
 }

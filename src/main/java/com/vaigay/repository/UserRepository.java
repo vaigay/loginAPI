@@ -26,4 +26,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query("SELECT u.password FROM User u WHERE u.username = :username")
 	String getUserPassword(@Param("username") String username);
 	
+	User findByCart_Bill_Id(long id);
+	
 }

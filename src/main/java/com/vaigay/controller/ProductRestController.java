@@ -66,6 +66,7 @@ public class ProductRestController {
 	@PutMapping("/product/{id}")
 	public ResponseEntity<ProductDTO> updateProduct(ProductDTO productDTO, @RequestParam(value = "image" , required = false) MultipartFile upload,
 			@PathVariable(name = "id") long id) throws IOException {
+		System.out.println(productDTO);
 		Product product = productService.getProductById(id);
 		if (product == null)
 			return new ResponseEntity<ProductDTO>(HttpStatus.NOT_FOUND);

@@ -29,8 +29,7 @@ public class BillService {
 	@Autowired
 	private ProductInCartRepository pInCartRes;
 	
-	@Autowired
-	private ProductInCartService productInCartService;
+
 	
 	@Autowired
 	private ProductInCartRepository productInCartRepository;
@@ -38,9 +37,7 @@ public class BillService {
 	@Autowired
 	private CartRepository cartRepository;
 	
-	@Autowired
-	private ProductInCartConverter pInCartConverter;
-	
+
 	
 	
 	public boolean isCartHasAnyProduct(Cart cart) {
@@ -62,14 +59,14 @@ public class BillService {
 		
 		double totalMoney = 0;
 		for(ProductInCart p : lCarts) {
-			double amountOfProduct = p.getPrice() * p.getQuantity();
+			double amountOfProduct = p.getProduct().getPrice() * p.getQuantity();
 			totalMoney += amountOfProduct;
 			Product tmp = p.getProduct();
 			saveProductInCart(tmp, p);
 			ProductHasSoldDTO pDto = new ProductHasSoldDTO(p);
 			lDtos.add(pDto);
 		}
-		
+		System.out.println("totalMoney: " + totalMoney);
 		b.setTotalProductAmount(totalMoney);
 		billRepository.save(b);
 		cart.setStatus(true);
@@ -77,6 +74,7 @@ public class BillService {
 		billDTO.setTotalProductAmount(totalMoney);
 		billDTO.setListProductHasSoldDTOs(lDtos);
 		billDTO.setCrateDate(b.getCrateDate());
+		billDTO.setId(b.getId());
 		return billDTO;
 	}
 	
@@ -115,7 +113,9 @@ public class BillService {
 	
 
 	public List<BillDTO> getAllBillOfUser(long idUser) {
+		System.out.println("first");
 		List<Bill> listBills = billRepository.findAllByCart_User_Id(idUser);
+		System.out.println("oke");
 		System.out.println(listBills.size());
 		List<BillDTO> listDTOs = new ArrayList<BillDTO>();
 		for(Bill bill : listBills )
@@ -124,7 +124,9 @@ public class BillService {
 	}
 	
 	public List<BillDTO> getAllBillByAdmin(){
+		System.out.println("first");
 		List<Bill> listBills = billRepository.findAll();
+		System.out.println("oke");
 		System.out.println(listBills.size());
 		List<BillDTO> listDTOs = new ArrayList<BillDTO>();
 		for(Bill bill : listBills )

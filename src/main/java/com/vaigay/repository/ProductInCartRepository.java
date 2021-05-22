@@ -26,7 +26,7 @@ public interface ProductInCartRepository extends JpaRepository<ProductInCart, Lo
 	@Query("UPDATE ProductInCart p set p.quantity = :quantity WHERE p.product.id = :id")
 	void updateProductInCartQuantity(@Param("id")  long id,@Param("quantity")  int quantity);
 	
-	Optional<ProductInCart> findOneByProduct_id(long id);
+	Optional<ProductInCart> findOneByCart_IdAndProduct_Id(long idCart,long idProduct);
 	
 	boolean existsByProduct_Id(long id);
 	
