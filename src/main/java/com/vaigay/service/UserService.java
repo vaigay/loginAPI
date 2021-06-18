@@ -103,7 +103,7 @@ public class UserService {
 	}
 	
 	public UserDTO getUserByIdBill(long id) {
-		return userConverter.convertToUserDTO(userRepository.findByCart_Bill_Id(id));
+		return userConverter.convertToUserDTO(userRepository.findByCart_Bill_Id(id).orElse(null));
 	}
 
 }

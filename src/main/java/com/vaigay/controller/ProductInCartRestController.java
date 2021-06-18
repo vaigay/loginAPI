@@ -41,15 +41,11 @@ public class ProductInCartRestController {
 	
 	@PostMapping("/productInCart") // thêm Product vào cart
 	public ResponseEntity<String> addProductToCart(@RequestBody RequestProductInCart productAddToCart){
-		System.out.println("11111111111111111111111111111111");
 		if(!pService.checkProductExists(productAddToCart.getIdProduct()))
 			return new ResponseEntity<String>("Product Invalid",HttpStatus.NOT_FOUND);
-		System.out.println("222222222222222222222");
 		if(productAddToCart.getQuantity() <= 0)
-			return new ResponseEntity<String>("Product Invalid",HttpStatus.BAD_GATEWAY);
-		System.out.println("3333333333333333333333");
+			return new ResponseEntity<String>("Product Invalid",HttpStatus.BAD_REQUEST);
 		pCartService.addProductToCart(productAddToCart,userChecking.getIdUser());
-		System.out.println("4444444444444444444444");
 		return new ResponseEntity<String>("Add Product Successfully",HttpStatus.CREATED);
 	}
 	

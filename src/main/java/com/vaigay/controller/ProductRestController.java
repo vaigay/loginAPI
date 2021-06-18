@@ -46,7 +46,6 @@ public class ProductRestController {
 	@GetMapping("/product/{id}")
 	public ResponseEntity<ProductDTO> getOneProduct(@PathVariable(name = "id") long id) {
 		ProductDTO p = productService.getProductDTOById(id);
-		System.out.println(":123123");
 		if (p == null)
 			return new ResponseEntity<ProductDTO>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<ProductDTO>(p, HttpStatus.OK);
@@ -64,14 +63,14 @@ public class ProductRestController {
 	}
 
 	@PutMapping("/product/{id}")
-	public ResponseEntity<ProductDTO> updateProduct(ProductDTO productDTO, @RequestParam(value = "image" , required = false) MultipartFile upload,
+	public ResponseEntity<?> updateProduct(ProductDTO productDTO, @RequestParam(value = "image" , required = false) MultipartFile upload,
 			@PathVariable(name = "id") long id) throws IOException {
 		System.out.println(productDTO);
 		Product product = productService.getProductById(id);
 		if (product == null)
 			return new ResponseEntity<ProductDTO>(HttpStatus.NOT_FOUND);
 		productService.updateProduct(product, productDTO, id,upload);
-		productDTO.setId(id);
+		
 		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
 	}
 

@@ -72,7 +72,7 @@ public class UserRestController {
 	}
 	
 	
-	@GetMapping("/users")
+	@GetMapping("/admin/users")
 	public ResponseEntity<List<UserDTO>> getAllUser(){
 		List<UserDTO> userDTOs = userService.getAllUser();
 		return new ResponseEntity<List<UserDTO>>(userDTOs,HttpStatus.OK);
@@ -95,6 +95,8 @@ public class UserRestController {
 	@GetMapping("admin/userBill/{id}")
 	public ResponseEntity<UserDTO> adminGetOneUserOfBill(@PathVariable(name = "id") long id) {
 		UserDTO userDTO =userService.getUserByIdBill(id);
+		if(userDTO == null)
+			return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
 		return new ResponseEntity<UserDTO>(userDTO,HttpStatus.OK);
 	}
 	

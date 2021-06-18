@@ -59,7 +59,7 @@ public class BillRestController {
 		return new ResponseEntity<List<BillDTO>>(billService.getAllBillByAdmin(),HttpStatus.OK);
 	}
 	
-	@GetMapping("admin/bill/{id}")//id Bill
+	@GetMapping("/admin/bill/{id}")//id Bill
 	public ResponseEntity<BillDTO> getOneBillByAdmin(@PathVariable(value = "id") long id){;
 		BillDTO bill = billService.getOneBillById(id);
 		if(bill == null)
@@ -67,7 +67,7 @@ public class BillRestController {
 		return new ResponseEntity<BillDTO>(bill,HttpStatus.OK);
 	}
 	
-	@GetMapping("admin/bills/{id}")//id User
+	@GetMapping("/admin/bills/{id}")//id User
 	public ResponseEntity<List<BillDTO>> getAllBillOfUserByAdmin(@PathVariable(value = "id") long id){
 		System.out.println("asdasdasdasd");
 		System.out.println("dcm");
